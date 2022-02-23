@@ -4,6 +4,7 @@ const router = require("express").Router();
 const { registerValidation, loginValidation } = require("../validation");
 const User = require("../model/User");
 const bcrypt = require("bcryptjs");
+const jwt = require("jsonwebtoken");
 
 router.post("/register", async (request, response) => {
   // Validate request
@@ -77,8 +78,9 @@ router.post("/login", async (request, response) => {
       errorStatus: 400,
       errorMessage: "The entered password does not match. Please try again",
     });
-  // Create JWT Token
-
+  // Create JWT Token & attach it to header
+  const jwtToken = jwt.sign({_id: user._id}, process.env.JWT_SECRET);
+  response.header('auth-token', jwtToken);
   // Send Response
   response.send({
     status: 200,
@@ -86,6 +88,7 @@ router.post("/login", async (request, response) => {
     username: user.username,
     email: user.email,
     createdAt: user.createdAt,
+    token: jwtToken
   });
 });
 
