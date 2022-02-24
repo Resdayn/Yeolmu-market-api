@@ -3,6 +3,7 @@ const app = express();
 const dotenv = require("dotenv");
 const mongoose = require("mongoose");
 const cors = require('cors');
+const verifyToken = require('./routes/verifyToken');
 
 // Import Routes
 const authenticationRoute = require("./routes/authentication");
@@ -26,3 +27,9 @@ app.use(express.json()); // To accept json post requests
 // Routes Middlewares
 app.use(cors());
 app.use("/api/user", authenticationRoute);
+
+// Protected TEST routes
+app.get('/api/protected', verifyToken, (request, response) => {
+  const userId = request.user._id
+  response.send(`USER ${userId} CONFIRMED. PROTECTED ROUTE ACCESSED`);
+});
