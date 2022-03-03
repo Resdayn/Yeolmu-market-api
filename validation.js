@@ -8,6 +8,7 @@ const registerValidation = (bodyRequest) => {
       username: Joi.string().min(6).required().max(30),
       email: Joi.string().min(6).required().max(100).email(),
       password: Joi.string().min(6).required().max(1024),
+      image: Joi.string()
     });
     return schema.validate(bodyRequest);
   };
