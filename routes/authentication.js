@@ -31,6 +31,7 @@ router.post("/register", async (request, response) => {
     username: request.body.username,
     email: request.body.email,
     password: hashedPassword,
+    avatar: request.body.image
   });
   try {
     const savedUser = await newUser.save();
@@ -38,10 +39,7 @@ router.post("/register", async (request, response) => {
     // Send Response
     response.send({
       status: 200,
-      userId: savedUser._id,
       username: savedUser.username,
-      email: savedUser.email,
-      createdAt: savedUser.createdAt,
     });
   } catch (error) {
     response.status(500).send({
@@ -88,7 +86,8 @@ router.post("/login", async (request, response) => {
     username: user.username,
     email: user.email,
     createdAt: user.createdAt,
-    token: jwtToken
+    token: jwtToken,
+    avatar: user.avatar
   });
 });
 
