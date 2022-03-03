@@ -19,6 +19,10 @@ const userSchema = mongoose.Schema({
         min: 6,
         max: 1024
     },
+    avatar: {
+        type: String,
+        required: false,
+    },
 });
 
 // Automatically generate the date
