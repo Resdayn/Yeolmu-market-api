@@ -7,6 +7,7 @@ const verifyToken = require('./routes/verifyToken');
 
 // Import Routes
 const authenticationRoute = require("./routes/authentication");
+const itemRoute = require('./routes/item');
 
 // Initialize dotenv
 dotenv.config();
@@ -27,6 +28,7 @@ app.use(express.json()); // To accept json post requests
 // Routes Middlewares
 app.use(cors());
 app.use("/api/user", authenticationRoute);
+app.use("/api/item", itemRoute);
 
 // Protected TEST routes
 app.get('/api/protected', verifyToken, (request, response) => {
