@@ -25,6 +25,7 @@ const loginValidation = (bodyRequest) => {
 // Item Upload Validation
 const itemUploadValidation = (bodyRequest) => {
   const schema = Joi.object({
+    username: Joi.string().min(6).required().max(30),
     title: Joi.string().required().min(1),
     price: Joi.number().required(),
     photo: Joi.string().required(),
