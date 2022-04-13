@@ -13,11 +13,13 @@ router.post("/upload", async (request, response) => {
 
   // Create a new item
   const newItem = new Item({
+    username: request.body.username,
     title: request.body.title,
     price: request.body.price,
     photo: request.body.photo,
     details: request.body.details,
   });
+ 
 
   try {
     const savedItem = await newItem.save();
@@ -25,6 +27,7 @@ router.post("/upload", async (request, response) => {
     response.send({
       status: 200,
       itemId: savedItem._id,
+      username: savedItem.username,
       title: savedItem.title,
       price: savedItem.price,
       photo: savedItem.photo,
@@ -41,7 +44,7 @@ router.post("/upload", async (request, response) => {
 router.get("/get", async (request, response) => {
   try {
     // Get All Items
-    const items = await Item.find();
+    const items = await Item.find().sort({createdAt: 'desc'});
     // Send Success Response
     response.send(items);
   } catch (error) {
