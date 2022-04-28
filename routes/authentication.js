@@ -5,6 +5,7 @@ const { registerValidation, loginValidation } = require("../validation");
 const User = require("../model/User");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
+const verifyToken = require("./verifyToken");
 
 router.post("/register", async (request, response) => {
   // Validate request
@@ -80,6 +81,28 @@ router.post("/login", async (request, response) => {
   const jwtToken = jwt.sign({_id: user._id}, process.env.JWT_SECRET);
   response.header('auth-token', jwtToken);
   // Send Response
+  response.send({
+    status: 200,
+    userId: user._id,
+    username: user.username,
+    email: user.email,
+    createdAt: user.createdAt,
+    token: jwtToken,
+    avatar: user.avatar
+  });
+});
+
+router.post("/autologin", verifyToken, async (request, response) => {
+  // If the code reaches this point, the token has been then verified
+  const userId = request.user._id;
+
+  // Find the correct user
+  const user = await User.findOne({ _id: userId });
+
+  // Generate another token
+  const jwtToken = jwt.sign({_id: user._id}, process.env.JWT_SECRET);
+  
+  // Send the user data to the frontend
   response.send({
     status: 200,
     userId: user._id,
