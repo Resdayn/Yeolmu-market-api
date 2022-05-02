@@ -55,4 +55,28 @@ router.get("/get", async (request, response) => {
   }
 });
 
+router.get("/get/:id", async (request, response) => {
+  // Gets all the items of the specified user
+  username = request.params.id;
+  console.log(username)
+  // !username &&
+  //   response.status(400).send({
+  //     status: 400,
+  //     message: "User ID was not provided, please log in and try again.",
+  //   });
+
+  try {
+    const items = await Item.find({ username: username }).sort({
+      createdAt: "desc",
+    });
+    response.send(items);
+  } catch (error) {
+    console.log(error)
+    response.status(500).send({
+      status: 500,
+      message: "Unspecified Server Error. Items could not be retrieved",
+    });
+  }
+});
+
 module.exports = router;
