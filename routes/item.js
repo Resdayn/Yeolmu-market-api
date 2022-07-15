@@ -48,17 +48,19 @@ router.get("/get", async (request, response) => {
     // Send Success Response
     response.send(items);
   } catch (error) {
+    console.log(error);
     response.status(500).send({
       status: 500,
-      message: "Unspecified Server Error. Items could not be retrieved",
+      message: "Server Error. Items could not be retrieved",
     });
   }
 });
 
 router.get("/get/:id", async (request, response) => {
-  // Gets all the items of the specified user
+  // Gets all the uploaded by the specified user
   username = request.params.id;
   console.log(username)
+  // TODO: Fix the inconsistency username -> id? and implement the commented code below
   // !username &&
   //   response.status(400).send({
   //     status: 400,
