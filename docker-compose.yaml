@@ -1,0 +1,21 @@
+version: "3"
+services:
+  yeolmu-market-api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    environment:
+      - process.env.MONGODB_URL=mongodb://mongodb:27017/yeolmudb
+    ports:
+      - 3000:3000
+    restart: "unless-stopped"
+  mongodb:
+    image: mongo
+    container_name: mongodb
+    environment:
+      - MONGO_INITDB_DATABASE=yeolmudb
+      - MONGO_INITDB_ROOT_USERNAME=admin
+      - MONGO_INITDB_ROOT_PASSWORD=password
+    ports:
+      - 27017:27017
+    restart: "unless-stopped"
